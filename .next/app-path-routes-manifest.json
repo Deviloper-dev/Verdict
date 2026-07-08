@@ -1,6 +1,7 @@
 {
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/api/embed-pending/route": "/api/embed-pending",
   "/auth/callback/route": "/auth/callback",
   "/g/[groupId]/p/[pollId]/page": "/g/[groupId]/p/[pollId]",
   "/g/[groupId]/page": "/g/[groupId]",
@@ -10,5 +11,6 @@
   "/g/[groupId]/verify/data/route": "/g/[groupId]/verify/data",
   "/g/[groupId]/verify/page": "/g/[groupId]/verify",
   "/login/page": "/login",
-  "/page": "/"
+  "/page": "/",
+  "/search/page": "/search"
 }

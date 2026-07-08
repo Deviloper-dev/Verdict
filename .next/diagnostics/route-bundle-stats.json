@@ -112,6 +112,20 @@
     ]
   },
   {
+    "route": "/search",
+    "firstLoadUncompressedJsBytes": 520548,
+    "firstLoadChunkPaths": [
+      ".next/static/chunks/0u8fe5v6xf6ku.js",
+      ".next/static/chunks/367hlnaepu9q7.js",
+      ".next/static/chunks/275y47ndj_cof.js",
+      ".next/static/chunks/2088gygqk6p8a.js",
+      ".next/static/chunks/1w_0ewpxq1khp.js",
+      ".next/static/chunks/2r3q4ckq8cpqu.js",
+      ".next/static/chunks/3hubetogwyl_0.js",
+      ".next/static/chunks/turbopack-0t80s99ayth_x.js"
+    ]
+  },
+  {
     "route": "/_not-found",
     "firstLoadUncompressedJsBytes": 514717,
     "firstLoadChunkPaths": [

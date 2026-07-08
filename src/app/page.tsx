@@ -18,7 +18,7 @@ export default async function HomePage({
       <div className="topbar">
         <span className="wordmark">Verdict</span>
         <nav>
-          {me.name} ·{" "}
+          <Link href="/search">Search</Link> · {me.name} ·{" "}
           <form action={signOutAction} style={{ display: "inline" }}>
             <button className="quiet" style={{ margin: 0, padding: "0.1rem 0.5rem", fontSize: "0.85rem" }}>
               Sign out

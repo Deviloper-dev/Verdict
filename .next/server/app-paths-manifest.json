@@ -1,6 +1,7 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/embed-pending/route": "app/api/embed-pending/route.js",
   "/auth/callback/route": "app/auth/callback/route.js",
   "/g/[groupId]/p/[pollId]/page": "app/g/[groupId]/p/[pollId]/page.js",
   "/g/[groupId]/page": "app/g/[groupId]/page.js",
@@ -10,5 +11,6 @@
   "/g/[groupId]/verify/data/route": "app/g/[groupId]/verify/data/route.js",
   "/g/[groupId]/verify/page": "app/g/[groupId]/verify/page.js",
   "/login/page": "app/login/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/search/page": "app/search/page.js"
 }
