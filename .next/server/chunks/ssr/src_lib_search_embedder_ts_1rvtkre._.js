@@ -1,3 +1,0 @@
-module.exports=[86366,a=>{"use strict";a.s(["OpenAIEmbedder",0,class{apiKey;dim;model;constructor(a=process.env.OPENAI_API_KEY){this.apiKey=a,this.dim=1536,this.model="text-embedding-3-small"}async embed(a){if(!this.apiKey)throw Error("OPENAI_API_KEY is not set");let b=await fetch("https://api.openai.com/v1/embeddings",{method:"POST",headers:{"content-type":"application/json",authorization:`Bearer ${this.apiKey}`},body:JSON.stringify({model:this.model,input:a})});if(!b.ok)throw Error(`embedding request failed: ${b.status} ${await b.text()}`);return(await b.json()).data.sort((a,b)=>a.index-b.index).map(a=>a.embedding)}}])}];
-
-//# sourceMappingURL=src_lib_search_embedder_ts_1rvtkre._.js.map

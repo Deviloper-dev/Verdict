@@ -3,6 +3,7 @@
 **Settle it once.** A group of friends debates; when the required participants have voted (each with mandatory written reasoning) and one option leads outright, the conclusion is sealed into an append-only, hash-chained ledger that nobody — including the person hosting it — can silently rewrite. Semantic search answers "what did we decide about…" months later.
 
 PRD: [`docs/verdict-prd.md`](docs/verdict-prd.md) (v1.1). Implementation plans: `docs/superpowers/plans/`.
+**New here? Start with the step-by-step [Getting Started guide](docs/getting-started.md)** — clone → local tests → Supabase → Vercel → anchoring → first group.
 
 ## How the tamper-evidence works (three layers)
 
