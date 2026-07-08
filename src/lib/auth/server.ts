@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { upsertMember } from "../db/members";
 import { getPool } from "../db/pool";
 
 export async function createSupabaseServer() {
@@ -31,8 +32,10 @@ export interface SessionMember {
 }
 
 /**
- * Returns the signed-in member, creating/refreshing their members row
- * (members.id == Supabase Auth user id). Redirects to /login if signed out.
+ * Returns the signed-in member, creating their members row on first sign-in
+ * (members.id == Supabase Auth user id). The auth-derived name is only a
+ * default for that first insert — the stored name is the source of truth
+ * once the user edits it. Redirects to /login if signed out.
  */
 export async function requireMember(): Promise<SessionMember> {
   const supabase = await createSupabaseServer();
@@ -41,15 +44,11 @@ export async function requireMember(): Promise<SessionMember> {
   } = await supabase.auth.getUser();
   if (!user || !user.email) redirect("/login");
 
-  const name =
+  const defaultName =
     (user.user_metadata?.full_name as string | undefined) ??
     (user.user_metadata?.name as string | undefined) ??
     user.email.split("@")[0]!;
 
-  await getPool().query(
-    `insert into members (id, name, email) values ($1, $2, $3)
-     on conflict (id) do update set name = excluded.name, email = excluded.email`,
-    [user.id, name, user.email]
-  );
+  const name = await upsertMember(getPool(), { id: user.id, name: defaultName, email: user.email });
   return { id: user.id, name, email: user.email };
 }

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireMember } from "../lib/auth/server";
 import { addGroupMember, createGroup } from "../lib/db/groups";
+import { updateMemberName } from "../lib/db/members";
 import { getPool } from "../lib/db/pool";
 import { addParticipant, createPoll, removeParticipant, withdrawPoll } from "../lib/db/polls";
 import { isGroupMember } from "../lib/db/queries";
@@ -158,6 +159,18 @@ export async function withdrawPollAction(groupId: string, pollId: string): Promi
     backWithError(`/g/${groupId}/p/${pollId}`, err);
   }
   redirect(`/g/${groupId}`);
+}
+
+export async function updateNameAction(formData: FormData): Promise<void> {
+  const me = await requireMember();
+  const name = String(formData.get("name") ?? "");
+  try {
+    await updateMemberName(getPool(), me.id, name);
+  } catch (err) {
+    backWithError("/", err);
+  }
+  revalidatePath("/");
+  redirect("/");
 }
 
 export async function signOutAction(): Promise<void> {

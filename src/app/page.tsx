@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createGroupAction, signOutAction } from "./actions";
+import { createGroupAction, signOutAction, updateNameAction } from "./actions";
 import { requireMember } from "../lib/auth/server";
 import { getPool } from "../lib/db/pool";
 import { listGroupsForMember } from "../lib/db/queries";
@@ -18,7 +18,23 @@ export default async function HomePage({
       <div className="topbar">
         <span className="wordmark">Verdict</span>
         <nav>
-          <Link href="/search">Search</Link> · {me.name} ·{" "}
+          <Link href="/search">Search</Link> ·{" "}
+          <details className="name-editor">
+            <summary title="Change your display name">{me.name}</summary>
+            <form action={updateNameAction} className="card">
+              <label htmlFor="display-name">Display name</label>
+              <input
+                id="display-name"
+                name="name"
+                type="text"
+                defaultValue={me.name}
+                maxLength={80}
+                required
+              />
+              <button type="submit">Save</button>
+            </form>
+          </details>{" "}
+          ·{" "}
           <form action={signOutAction} style={{ display: "inline" }}>
             <button className="quiet" style={{ margin: 0, padding: "0.1rem 0.5rem", fontSize: "0.85rem" }}>
               Sign out
