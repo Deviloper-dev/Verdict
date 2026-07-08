@@ -54,7 +54,8 @@ describe.runIf(hasDb)("anchor export & restore", () => {
     const grp = exp.groups.find((g) => g.group_id === groupId)!;
 
     // Disaster: the records table is wiped (TRUNCATE bypasses row triggers).
-    await getPool().query("truncate records");
+    // CASCADE covers record_embeddings' FK when migration 00004 is applied.
+    await getPool().query("truncate records cascade");
     expect(await loadStoredChain(groupId)).toHaveLength(0);
 
     // Restore straight from the public export.
