@@ -47,7 +47,7 @@ tests/db/append.test.ts        — schema, append-only, concurrency, tamper-dete
 **Interfaces:**
 - Produces: a repo where `pnpm test` runs Vitest over `tests/**/*.test.ts`.
 
-- [ ] **Step 1: Init package and install dev tooling**
+- [x] **Step 1: Init package and install dev tooling**
 
 ```bash
 pnpm init
@@ -56,7 +56,7 @@ pnpm add pg
 pnpm add -D @types/pg
 ```
 
-- [ ] **Step 2: Write config files**
+- [x] **Step 2: Write config files**
 
 `package.json` — ensure these keys (keep pnpm's generated fields):
 
@@ -106,12 +106,12 @@ node_modules/
 supabase/.temp/
 ```
 
-- [ ] **Step 3: Verify the runner works**
+- [x] **Step 3: Verify the runner works**
 
 Run: `pnpm test`
 Expected: Vitest exits cleanly reporting no test files found (or 0 tests) — the runner itself must start without config errors. `pnpm typecheck` passes.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add package.json pnpm-lock.yaml tsconfig.json vitest.config.ts .gitignore
@@ -135,7 +135,7 @@ git commit -m "chore: scaffold TypeScript + Vitest project"
   - `HASH_VERSION = 1`
   - Types: `RecordFields`, `RecordOption {id,label}`, `RecordParticipant {member_id,name,added_at}`, `RecordVote {participant_id,option_id,opinion,voted_at}`, `StoredRecord = RecordFields & {this_hash: string}`.
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 `tests/chain/canonical.test.ts`:
 
@@ -237,12 +237,12 @@ describe("computeRecordHash", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `pnpm vitest run tests/chain`
 Expected: FAIL — modules not found.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `src/lib/chain/canonical.ts`:
 
@@ -397,12 +397,12 @@ export type * from "./types";
 
 (Until Task 3 lands, leave the `verify` re-export line out; add it in Task 3.)
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `pnpm vitest run tests/chain` and `pnpm typecheck`
 Expected: all canonical + hash tests PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/chain tests/chain
@@ -424,7 +424,7 @@ git commit -m "feat: canonical JSON serializer and record hashing (hash_version 
   - `verifyChain(groupId: string, records: StoredRecord[], anchor?: AnchorPoint): Promise<VerifyResult>`
   - Test helper `buildChain(groupId: string, n: number): Promise<StoredRecord[]>` (reused by DB tests in Task 6/7).
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 `tests/chain/helpers.ts`:
 
@@ -543,12 +543,12 @@ describe("verifyChain", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `pnpm vitest run tests/chain/verify.test.ts`
 Expected: FAIL — `verify.ts` not found.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `src/lib/chain/verify.ts`:
 
@@ -608,12 +608,12 @@ export async function verifyChain(
 
 Add to `src/lib/chain/index.ts`: `export { verifyChain } from "./verify";`
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `pnpm vitest run tests/chain` and `pnpm typecheck`
 Expected: all PASS (canonical, hash, verify).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/chain tests/chain
@@ -631,7 +631,7 @@ git commit -m "feat: isomorphic chain verification (tamper, gap, genesis, anchor
 **Interfaces:**
 - Produces: tables `members, groups, group_members, polls, options, participants, votes, records` exactly as below. DB tests consume `getPool()` from `tests/db/setup.ts`.
 
-- [ ] **Step 1: Write the migration**
+- [x] **Step 1: Write the migration**
 
 `supabase/migrations/00001_core_schema.sql`:
 
@@ -718,7 +718,7 @@ alter table records enable row level security;
 -- Deny-by-default for non-owner roles until M1 adds membership policies.
 ```
 
-- [ ] **Step 2: Write DB test scaffolding + failing schema test**
+- [x] **Step 2: Write DB test scaffolding + failing schema test**
 
 `tests/db/setup.ts`:
 
@@ -803,14 +803,14 @@ describe.runIf(hasDb)("schema", () => {
 });
 ```
 
-- [ ] **Step 3: Run tests**
+- [x] **Step 3: Run tests**
 
 Without a DB: `pnpm test` — the describe block is skipped; suite stays green.
 With local Supabase (`supabase start`, migrations applied via `supabase db reset` or `psql -f supabase/migrations/00001_core_schema.sql`):
 Run: `DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres pnpm vitest run tests/db`
 Expected: both schema tests PASS.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add supabase/migrations/00001_core_schema.sql tests/db
@@ -828,7 +828,7 @@ git commit -m "feat: core schema migration with per-group seq constraint"
 **Interfaces:**
 - Produces: role `verdict_ledger_writer` (INSERT+SELECT only) and trigger `records_immutable` that raises on UPDATE/DELETE. Task 7 disables this trigger deliberately to simulate a malicious owner.
 
-- [ ] **Step 1: Write the migration**
+- [x] **Step 1: Write the migration**
 
 `supabase/migrations/00002_records_append_only.sql`:
 
@@ -857,7 +857,7 @@ create trigger records_immutable
   for each row execute function verdict_block_record_mutation();
 ```
 
-- [ ] **Step 2: Write failing tests** (append to `tests/db/append.test.ts`)
+- [x] **Step 2: Write failing tests** (append to `tests/db/append.test.ts`)
 
 ```ts
 describe.runIf(hasDb)("append-only enforcement", () => {
@@ -889,12 +889,12 @@ describe.runIf(hasDb)("append-only enforcement", () => {
 
 Note: `resetDb` truncates `records` — TRUNCATE fires no row triggers, which is exactly why the anchor (M4) exists. Keep `records` in the truncate list for test hygiene.
 
-- [ ] **Step 3: Apply migration + run tests**
+- [x] **Step 3: Apply migration + run tests**
 
 Run: `psql "$DATABASE_URL" -f supabase/migrations/00002_records_append_only.sql` (or `supabase db reset`), then `DATABASE_URL=... pnpm vitest run tests/db`
 Expected: UPDATE/DELETE tests PASS (exception message contains "immutable").
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add supabase/migrations/00002_records_append_only.sql tests/db/append.test.ts
@@ -920,7 +920,7 @@ export async function appendRecord(pool: Pool, input: NewRecordInput): Promise<S
 
 M1's poll-finalization service will call this with real poll snapshots.
 
-- [ ] **Step 1: Write failing tests** (append to `tests/db/append.test.ts`)
+- [x] **Step 1: Write failing tests** (append to `tests/db/append.test.ts`)
 
 ```ts
 import { appendRecord, type NewRecordInput } from "../../src/lib/db/appendRecord";
@@ -985,12 +985,12 @@ describe.runIf(hasDb)("appendRecord", () => {
 });
 ```
 
-- [ ] **Step 2: Run to verify failure**
+- [x] **Step 2: Run to verify failure**
 
 Run: `DATABASE_URL=... pnpm vitest run tests/db`
 Expected: FAIL — `appendRecord` module not found.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `src/lib/db/appendRecord.ts`:
 
@@ -1064,12 +1064,12 @@ export async function appendRecord(pool: Pool, input: NewRecordInput): Promise<S
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `DATABASE_URL=... pnpm vitest run tests/db` and `pnpm typecheck`
 Expected: PASS, including the concurrency test.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/db/appendRecord.ts tests/db/append.test.ts
@@ -1086,7 +1086,7 @@ git commit -m "feat: advisory-locked appendRecord sealing primitive"
 **Interfaces:**
 - Consumes: everything above. This is the milestone gate from PRD §11: detect (a) a tampered row, (b) a deleted row, (c) a truncated tail — performed via direct SQL as a malicious owner would (trigger disabled).
 
-- [ ] **Step 1: Write the tests**
+- [x] **Step 1: Write the tests**
 
 ```ts
 describe.runIf(hasDb)("M0 exit criteria: tamper detection end-to-end", () => {
@@ -1139,12 +1139,12 @@ describe.runIf(hasDb)("M0 exit criteria: tamper detection end-to-end", () => {
 });
 ```
 
-- [ ] **Step 2: Run the full suite**
+- [x] **Step 2: Run the full suite**
 
 Run: `DATABASE_URL=... pnpm test` and `pnpm typecheck`
 Expected: every test in `tests/chain` and `tests/db` PASSES. **This is the M0 phase gate.**
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add tests/db/append.test.ts
@@ -1155,7 +1155,7 @@ git commit -m "test: M0 exit criteria — tamper, deletion, truncation all detec
 
 ## Post-M0 checklist
 
-- [ ] All chain-library tests pass with no DB (`pnpm test` on a clean machine)
-- [ ] All DB tests pass against local Supabase (`supabase start` + migrations + `DATABASE_URL=... pnpm test`) — **blocked on Docker/Supabase CLI being installed locally; code and tests are ready**
-- [ ] Update this plan's checkboxes; mark M0 done in PRD tracking
+- [x] All chain-library tests pass with no DB (`pnpm test` on a clean machine)
+- [x] All DB tests pass — verified 2026-07-08 against a scratch Postgres 14 cluster (Homebrew `initdb` in the session scratchpad, both migrations applied): 30/30 tests green, including all three M0 exit-criteria tamper tests. Re-run against local Supabase (PG15+) once Docker + Supabase CLI are installed, for platform parity.
+- [x] Update this plan's checkboxes; mark M0 done in PRD tracking
 - [ ] Next: write M1 plan (groups/polls/votes flow + Supabase Auth + RLS policies + finalization service calling `appendRecord`)
