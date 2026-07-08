@@ -1,5 +1,6 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  test: { include: ["tests/**/*.test.ts"] },
+  // DB test files share one database and truncate between tests — never run files in parallel.
+  test: { include: ["tests/**/*.test.ts"], fileParallelism: false },
 });
