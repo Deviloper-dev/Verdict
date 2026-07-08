@@ -92,6 +92,33 @@ h3 {
   padding: 1.1rem 1.25rem;
   margin-bottom: 0.9rem;
 }
+
+.name-editor {
+  display: inline-block;
+  position: relative;
+}
+.name-editor summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline;
+  color: var(--text);
+  border-bottom: 1px dotted var(--muted);
+}
+.name-editor summary::-webkit-details-marker {
+  display: none;
+}
+.name-editor[open] summary {
+  color: var(--blue);
+}
+.name-editor form.card {
+  position: absolute;
+  right: 0;
+  top: 1.6rem;
+  z-index: 10;
+  width: 220px;
+  margin: 0;
+  text-align: left;
+}
 .card h3 a {
   color: var(--text);
 }
