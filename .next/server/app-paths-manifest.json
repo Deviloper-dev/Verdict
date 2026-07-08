@@ -1,6 +1,7 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/anchor-export/route": "app/api/anchor-export/route.js",
   "/api/embed-pending/route": "app/api/embed-pending/route.js",
   "/auth/callback/route": "app/auth/callback/route.js",
   "/g/[groupId]/p/[pollId]/page": "app/g/[groupId]/p/[pollId]/page.js",

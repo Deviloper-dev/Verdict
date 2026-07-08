@@ -101,6 +101,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/api/anchor-export",
+      "regex": "^/api/anchor\\-export(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/anchor\\-export(?:/)?$"
+    },
+    {
       "page": "/api/embed-pending",
       "regex": "^/api/embed\\-pending(?:/)?$",
       "routeKeys": {},
