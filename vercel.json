@@ -1,0 +1,4 @@
+{
+  "installCommand": "npx -y pnpm@11.10.0 install",
+  "buildCommand": "npx -y pnpm@11.10.0 run build"
+}
