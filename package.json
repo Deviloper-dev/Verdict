@@ -11,13 +11,6 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.10.0",
-      "onFail": "download"
-    }
-  },
   "devDependencies": {
     "@types/node": "^26.1.0",
     "@types/pg": "^8.20.0",
