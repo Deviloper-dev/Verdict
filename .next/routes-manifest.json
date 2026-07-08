@@ -1,0 +1,134 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/g/[groupId]",
+      "regex": "^/g/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPgroupId": "nxtPgroupId"
+      },
+      "namedRegex": "^/g/(?<nxtPgroupId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/g/[groupId]/p/[pollId]",
+      "regex": "^/g/([^/]+?)/p/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPgroupId": "nxtPgroupId",
+        "nxtPpollId": "nxtPpollId"
+      },
+      "namedRegex": "^/g/(?<nxtPgroupId>[^/]+?)/p/(?<nxtPpollId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/g/[groupId]/polls/new",
+      "regex": "^/g/([^/]+?)/polls/new(?:/)?$",
+      "routeKeys": {
+        "nxtPgroupId": "nxtPgroupId"
+      },
+      "namedRegex": "^/g/(?<nxtPgroupId>[^/]+?)/polls/new(?:/)?$"
+    },
+    {
+      "page": "/g/[groupId]/records",
+      "regex": "^/g/([^/]+?)/records(?:/)?$",
+      "routeKeys": {
+        "nxtPgroupId": "nxtPgroupId"
+      },
+      "namedRegex": "^/g/(?<nxtPgroupId>[^/]+?)/records(?:/)?$"
+    },
+    {
+      "page": "/g/[groupId]/records/[seq]",
+      "regex": "^/g/([^/]+?)/records/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPgroupId": "nxtPgroupId",
+        "nxtPseq": "nxtPseq"
+      },
+      "namedRegex": "^/g/(?<nxtPgroupId>[^/]+?)/records/(?<nxtPseq>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/g/[groupId]/verify",
+      "regex": "^/g/([^/]+?)/verify(?:/)?$",
+      "routeKeys": {
+        "nxtPgroupId": "nxtPgroupId"
+      },
+      "namedRegex": "^/g/(?<nxtPgroupId>[^/]+?)/verify(?:/)?$"
+    },
+    {
+      "page": "/g/[groupId]/verify/data",
+      "regex": "^/g/([^/]+?)/verify/data(?:/)?$",
+      "routeKeys": {
+        "nxtPgroupId": "nxtPgroupId"
+      },
+      "namedRegex": "^/g/(?<nxtPgroupId>[^/]+?)/verify/data(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/auth/callback",
+      "regex": "^/auth/callback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/callback(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
