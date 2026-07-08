@@ -101,6 +101,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/api/embed-pending",
+      "regex": "^/api/embed\\-pending(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/embed\\-pending(?:/)?$"
+    },
+    {
       "page": "/auth/callback",
       "regex": "^/auth/callback(?:/)?$",
       "routeKeys": {},
@@ -111,6 +117,12 @@
       "regex": "^/login(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/search",
+      "regex": "^/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/search(?:/)?$"
     }
   ],
   "dataRoutes": [],

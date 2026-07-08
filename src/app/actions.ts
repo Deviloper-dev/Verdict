@@ -95,7 +95,13 @@ export async function castVoteAction(groupId: string, pollId: string, formData: 
       option_id: optionId,
       opinion,
     });
-    if (result.finalized) sealedSeq = result.record!.seq;
+    if (result.finalized) {
+      sealedSeq = result.record!.seq;
+      // Fire-and-forget: sealing never waits on the embedding provider.
+      const { embedPendingRecords } = await import("../lib/search/pipeline");
+      const { OpenAIEmbedder } = await import("../lib/search/embedder");
+      void embedPendingRecords(getPool(), new OpenAIEmbedder()).catch(() => {});
+    }
   } catch (err) {
     backWithError(path, err);
   }
