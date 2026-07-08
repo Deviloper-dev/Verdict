@@ -10,6 +10,7 @@ export default function VerifyPage({ params }: { params: Promise<{ groupId: stri
   const [state, setState] = useState<"idle" | "running" | "done" | "error">("idle");
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [checkedAt, setCheckedAt] = useState<string | null>(null);
+  const [anchorUsed, setAnchorUsed] = useState<(AnchorPoint & { anchored_at?: string }) | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function runVerification() {
@@ -20,10 +21,11 @@ export default function VerifyPage({ params }: { params: Promise<{ groupId: stri
       if (!res.ok) throw new Error(`could not fetch records (${res.status})`);
       const data = (await res.json()) as {
         records: StoredRecord[];
-        anchor: AnchorPoint | null;
+        anchor: (AnchorPoint & { anchored_at?: string }) | null;
       };
       // The hashes are recomputed HERE, in your browser — not by the server.
       const verdict = await verifyChain(groupId, data.records, data.anchor ?? undefined);
+      setAnchorUsed(data.anchor);
       setResult(verdict);
       setCheckedAt(new Date().toLocaleString());
       setState("done");
@@ -65,6 +67,19 @@ export default function VerifyPage({ params }: { params: Promise<{ groupId: stri
                 {result.checked} record{result.checked === 1 ? "" : "s"} verified · every hash matches ·
                 every link holds · checked {checkedAt}
               </p>
+              {anchorUsed ? (
+                <p className="small" style={{ color: "var(--green)" }}>
+                  ✓ Matches the public anchor (№ {anchorUsed.seq}
+                  {anchorUsed.anchored_at ? `, anchored ${new Date(anchorUsed.anchored_at).toLocaleString()}` : ""}
+                  ) — history older than that anchor cannot have been rewritten by anyone, including the
+                  admin.
+                </p>
+              ) : (
+                <p className="small muted">
+                  No public anchor configured yet — this proves internal consistency only. Once anchoring is
+                  set up, verification also checks the chain against a hash published outside the server.
+                </p>
+              )}
               {result.checked === 0 && <p className="small muted">(The ledger is empty — nothing to break yet.)</p>}
             </>
           ) : (

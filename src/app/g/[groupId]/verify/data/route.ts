@@ -11,6 +11,18 @@ export async function GET(_request: Request, context: { params: Promise<{ groupI
     return NextResponse.json({ error: "not a member of this group" }, { status: 403 });
   }
   const records = await loadChain(getPool(), groupId);
-  // anchor: filled in by M4 (fetched from the public GitHub anchor repo).
-  return NextResponse.json({ group_id: groupId, records, anchor: null });
+
+  // Public anchor (M4): fetched fresh from the GitHub anchor repo when configured,
+  // e.g. ANCHOR_RAW_BASE_URL=https://raw.githubusercontent.com/you/verdict/main
+  let anchor: { seq: number; this_hash: string; anchored_at?: string } | null = null;
+  const base = process.env.ANCHOR_RAW_BASE_URL;
+  if (base) {
+    try {
+      const res = await fetch(`${base}/anchors/${groupId}/latest.json`, { cache: "no-store" });
+      if (res.ok) anchor = await res.json();
+    } catch {
+      // Unreachable anchor host: report "no anchor" rather than failing verification.
+    }
+  }
+  return NextResponse.json({ group_id: groupId, records, anchor });
 }

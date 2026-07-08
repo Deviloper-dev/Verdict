@@ -15,11 +15,11 @@
   },
   {
     "route": "/g/[groupId]/verify",
-    "firstLoadUncompressedJsBytes": 525052,
+    "firstLoadUncompressedJsBytes": 525618,
     "firstLoadChunkPaths": [
       ".next/static/chunks/0u8fe5v6xf6ku.js",
       ".next/static/chunks/367hlnaepu9q7.js",
-      ".next/static/chunks/3w_y15ql6ex9n.js",
+      ".next/static/chunks/1it6omfz7we21.js",
       ".next/static/chunks/2088gygqk6p8a.js",
       ".next/static/chunks/1w_0ewpxq1khp.js",
       ".next/static/chunks/2r3q4ckq8cpqu.js",
