@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PasswordForm from "./PasswordForm";
 import { createGroupAction, signOutAction, updateNameAction } from "./actions";
 import { requireMember } from "../lib/auth/server";
 import { getPool } from "../lib/db/pool";
@@ -34,6 +35,8 @@ export default async function HomePage({
               <button type="submit">Save</button>
             </form>
           </details>{" "}
+          ·{" "}
+          <PasswordForm />{" "}
           ·{" "}
           <form action={signOutAction} style={{ display: "inline" }}>
             <button className="quiet" style={{ margin: 0, padding: "0.1rem 0.5rem", fontSize: "0.85rem" }}>

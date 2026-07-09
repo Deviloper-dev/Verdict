@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { AUTH_COOKIE_OPTIONS } from "./cookie-options";
 import { redirect } from "next/navigation";
 import { upsertMember } from "../db/members";
 import { getPool } from "../db/pool";
@@ -10,6 +11,7 @@ export async function createSupabaseServer() {
   if (!url || !key) throw new Error("Supabase env vars are not set — see .env.example");
   const cookieStore = await cookies();
   return createServerClient(url, key, {
+    cookieOptions: AUTH_COOKIE_OPTIONS,
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {
