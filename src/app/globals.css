@@ -91,6 +91,8 @@ h3 {
   border-radius: 10px;
   padding: 1.1rem 1.25rem;
   margin-bottom: 0.9rem;
+  /* Containing block for .card-link's whole-card click overlay. */
+  position: relative;
 }
 
 .name-editor {
@@ -115,12 +117,27 @@ h3 {
   right: 0;
   top: 1.6rem;
   z-index: 10;
-  width: 220px;
+  width: min(240px, 86vw);
   margin: 0;
   text-align: left;
 }
 .card h3 a {
   color: var(--text);
+}
+
+/* Whole-card click target: the title link's ::after covers the card. */
+.card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+}
+/* Everything else interactive inside a card stays above the overlay. */
+.card a:not(.card-link),
+.card form,
+.card button {
+  position: relative;
+  z-index: 1;
 }
 
 .chip {
@@ -262,6 +279,8 @@ button.danger {
   border-color: color-mix(in srgb, var(--red) 40%, transparent);
 }
 
+/* The row is a <label>, so a click anywhere inside it selects the radio;
+   overrides the global muted label styling. */
 .option-row {
   display: flex;
   align-items: flex-start;
@@ -269,12 +288,19 @@ button.danger {
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--border);
   border-radius: 8px;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem;
   background: var(--surface-2);
+  font-size: 1rem;
+  color: var(--text);
+  cursor: pointer;
+}
+.option-row:hover {
+  border-color: color-mix(in srgb, var(--violet) 35%, var(--border));
 }
 .option-row input[type="radio"] {
   margin-top: 0.25rem;
   accent-color: var(--violet);
+  cursor: pointer;
 }
 
 .verdict-doc {
@@ -310,6 +336,32 @@ button.danger {
   margin-top: 0.75rem;
 }
 
+/* Login page: divider between primary (password) and secondary auth paths. */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 1.4rem;
+  letter-spacing: 0.04em;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  background: var(--border);
+  flex: 1;
+}
+.alt-auth {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.alt-auth button {
+  margin-top: 0.9rem;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -324,9 +376,41 @@ th {
 
 @media (prefers-reduced-motion: no-preference) {
   .card {
-    transition: border-color 140ms ease;
+    transition: border-color 140ms ease, background 140ms ease;
   }
-  .card:hover {
-    border-color: color-mix(in srgb, var(--violet) 35%, var(--border));
+}
+.card:has(.card-link):hover {
+  border-color: color-mix(in srgb, var(--violet) 45%, var(--border));
+  background: color-mix(in srgb, var(--violet) 4%, var(--surface));
+}
+.card:hover {
+  border-color: color-mix(in srgb, var(--violet) 35%, var(--border));
+}
+
+button:disabled,
+.btn:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+@media (max-width: 560px) {
+  .shell {
+    padding: 1.5rem 1rem 4rem;
+  }
+  h1 {
+    font-size: 1.55rem;
+  }
+  .topbar {
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+    margin-bottom: 1.75rem;
+  }
+  button,
+  .btn {
+    padding: 0.6rem 1.1rem; /* comfortable tap target */
+  }
+  td,
+  th {
+    padding: 0.45rem 0.4rem;
   }
 }
