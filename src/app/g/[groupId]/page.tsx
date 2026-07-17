@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ClearQueryParams from "../../ClearQueryParams";
+import SubmitButton from "../../SubmitButton";
 import { addMemberByEmailAction } from "../../actions";
 import { requireMember } from "../../../lib/auth/server";
 import { getPool } from "../../../lib/db/pool";
@@ -10,11 +12,11 @@ export default async function GroupPage({
   searchParams,
 }: {
   params: Promise<{ groupId: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; added?: string }>;
 }) {
   const me = await requireMember();
   const { groupId } = await params;
-  const { error } = await searchParams;
+  const { error, added } = await searchParams;
   const group = await getGroupDetail(getPool(), groupId, me.id);
   if (!group) notFound();
 
@@ -22,6 +24,7 @@ export default async function GroupPage({
 
   return (
     <main>
+      {(error || added) && <ClearQueryParams params={["error", "added"]} />}
       <div className="topbar">
         <span className="wordmark">
           <Link href="/">Verdict</Link>
@@ -49,7 +52,7 @@ export default async function GroupPage({
       {group.polls.map((p) => (
         <div className="card" key={p.id}>
           <h3>
-            <Link href={`/g/${group.id}/p/${p.id}`}>{p.title}</Link>
+            <Link className="card-link" href={`/g/${group.id}/p/${p.id}`}>{p.title}</Link>
           </h3>
           <p className="small" style={{ margin: "0.3rem 0 0" }}>
             {p.status === "open" && (
@@ -81,8 +84,9 @@ export default async function GroupPage({
         <form action={addMember}>
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" required placeholder="friend@example.com" />
-          <button type="submit">Add to {group.name}</button>
+          <SubmitButton pendingLabel="Adding…">Add to {group.name}</SubmitButton>
         </form>
+        {added && <p className="notice">{added} added to the group.</p>}
         {error && <p className="error">{error}</p>}
       </div>
     </main>

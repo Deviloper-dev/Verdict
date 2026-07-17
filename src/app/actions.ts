@@ -37,18 +37,20 @@ export async function addMemberByEmailAction(groupId: string, formData: FormData
   const email = String(formData.get("email") ?? "")
     .trim()
     .toLowerCase();
+  let addedName: string;
   try {
     if (!(await isGroupMember(getPool(), groupId, me.id))) throw new Error("not your group");
-    const found = await getPool().query("select id from members where lower(email) = $1", [email]);
+    const found = await getPool().query("select id, name from members where lower(email) = $1", [email]);
     if (found.rows.length === 0) {
       throw new Error(`${email} hasn't signed in to Verdict yet — ask them to sign in once first`);
     }
     await addGroupMember(getPool(), { group_id: groupId, member_id: found.rows[0].id });
+    addedName = found.rows[0].name;
   } catch (err) {
     backWithError(path, err);
   }
   revalidatePath(path);
-  redirect(path);
+  redirect(`${path}?added=${encodeURIComponent(addedName)}`);
 }
 
 export async function createPollAction(groupId: string, formData: FormData): Promise<void> {

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ClearQueryParams from "../../../../ClearQueryParams";
+import SubmitButton from "../../../../SubmitButton";
 import {
   addParticipantAction,
   castVoteAction,
@@ -37,6 +39,7 @@ export default async function PollPage({
 
   return (
     <main>
+      {error && <ClearQueryParams params={["error"]} />}
       <div className="topbar">
         <span className="wordmark">
           <Link href="/">Verdict</Link>
@@ -71,19 +74,16 @@ export default async function PollPage({
           <h3>{poll.my_vote ? "Your vote (you can change it until sealing)" : "Record your vote"}</h3>
           <form action={vote}>
             {poll.options.map((o) => (
-              <div className="option-row" key={o.id}>
+              <label className="option-row" key={o.id}>
                 <input
                   type="radio"
-                  id={`opt-${o.id}`}
                   name="option_id"
                   value={o.id}
                   defaultChecked={poll.my_vote?.option_id === o.id}
                   required
                 />
-                <label htmlFor={`opt-${o.id}`} style={{ margin: 0, color: "var(--text)" }}>
-                  {o.label}
-                </label>
-              </div>
+                <span>{o.label}</span>
+              </label>
             ))}
             <label htmlFor="opinion">Your reasoning — required, it goes on the permanent record</label>
             <textarea
@@ -93,7 +93,9 @@ export default async function PollPage({
               defaultValue={poll.my_vote?.opinion ?? ""}
               placeholder="Why this option? Your future selves are reading."
             />
-            <button type="submit">{poll.my_vote ? "Change vote" : "Cast vote"}</button>
+            <SubmitButton pendingLabel="Recording…">
+              {poll.my_vote ? "Change vote" : "Cast vote"}
+            </SubmitButton>
           </form>
           <p className="small muted" style={{ marginTop: "0.75rem" }}>
             Votes and reasoning stay hidden while the case is open. Everything is revealed in the sealed
@@ -120,9 +122,13 @@ export default async function PollPage({
                   <td style={{ textAlign: "right" }}>
                     <form action={removePart} style={{ display: "inline" }}>
                       <input type="hidden" name="member_id" value={p.member_id} />
-                      <button className="quiet" style={{ margin: 0, padding: "0.15rem 0.5rem" }}>
+                      <SubmitButton
+                        className="quiet"
+                        style={{ margin: 0, padding: "0.15rem 0.5rem" }}
+                        pendingLabel="removing…"
+                      >
                         remove
-                      </button>
+                      </SubmitButton>
                     </form>
                   </td>
                 )}
@@ -140,9 +146,9 @@ export default async function PollPage({
                 </option>
               ))}
             </select>
-            <button type="submit" className="quiet">
+            <SubmitButton className="quiet" pendingLabel="Adding…">
               Add participant
-            </button>
+            </SubmitButton>
           </form>
         )}
         {iAmCreator && poll.status === "open" && anyVotes && (
@@ -152,7 +158,9 @@ export default async function PollPage({
 
       {iAmCreator && poll.status === "open" && (
         <form action={withdraw}>
-          <button className="danger">Withdraw this case</button>
+          <SubmitButton className="danger" pendingLabel="Withdrawing…">
+            Withdraw this case
+          </SubmitButton>
         </form>
       )}
 
