@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ClearQueryParams from "../../../../ClearQueryParams";
+import SubmitButton from "../../../../SubmitButton";
 import { createPollAction } from "../../../../actions";
 import { requireMember } from "../../../../../lib/auth/server";
 import { getPool } from "../../../../../lib/db/pool";
@@ -22,6 +24,7 @@ export default async function NewPollPage({
 
   return (
     <main>
+      {error && <ClearQueryParams params={["error"]} />}
       <div className="topbar">
         <span className="wordmark">
           <Link href="/">Verdict</Link>
@@ -68,7 +71,7 @@ export default async function NewPollPage({
           </div>
         ))}
 
-        <button type="submit">Open the case</button>
+        <SubmitButton pendingLabel="Opening…">Open the case</SubmitButton>
         {error && <p className="error">{error}</p>}
       </form>
     </main>

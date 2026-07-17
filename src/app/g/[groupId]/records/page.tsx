@@ -35,7 +35,7 @@ export default async function LedgerPage({ params }: { params: Promise<{ groupId
           <div className="card" key={r.seq}>
             <h3>
               <span className="mono muted">№ {String(r.seq).padStart(3, "0")}</span>{" "}
-              <Link href={`/g/${groupId}/records/${r.seq}`}>{r.title}</Link>
+              <Link className="card-link" href={`/g/${groupId}/records/${r.seq}`}>{r.title}</Link>
             </h3>
             <p className="small" style={{ margin: "0.25rem 0 0" }}>
               <span style={{ color: "var(--green)" }}>{r.winning_label}</span>

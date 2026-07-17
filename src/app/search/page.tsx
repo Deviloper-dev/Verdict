@@ -66,7 +66,7 @@ export default async function SearchPage({
             <div className="card" key={`${h.group_id}-${h.seq}`}>
               <h3>
                 <span className="mono muted">№ {String(h.seq).padStart(3, "0")}</span>{" "}
-                <Link href={`/g/${h.group_id}/records/${h.seq}`}>{h.title}</Link>
+                <Link className="card-link" href={`/g/${h.group_id}/records/${h.seq}`}>{h.title}</Link>
               </h3>
               <p className="small" style={{ margin: "0.25rem 0 0" }}>
                 <span style={{ color: "var(--green)" }}>{h.winning_label}</span>
