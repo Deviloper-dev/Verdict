@@ -1,5 +1,8 @@
 import Link from "next/link";
+import ClearQueryParams from "./ClearQueryParams";
+import DetailsPopover from "./DetailsPopover";
 import PasswordForm from "./PasswordForm";
+import SubmitButton from "./SubmitButton";
 import { createGroupAction, signOutAction, updateNameAction } from "./actions";
 import { requireMember } from "../lib/auth/server";
 import { getPool } from "../lib/db/pool";
@@ -16,12 +19,12 @@ export default async function HomePage({
 
   return (
     <main>
+      {error && <ClearQueryParams params={["error"]} />}
       <div className="topbar">
         <span className="wordmark">Verdict</span>
         <nav>
           <Link href="/search">Search</Link> ·{" "}
-          <details className="name-editor">
-            <summary title="Change your display name">{me.name}</summary>
+          <DetailsPopover summary={me.name} title="Change your display name">
             <form action={updateNameAction} className="card">
               <label htmlFor="display-name">Display name</label>
               <input
@@ -32,16 +35,20 @@ export default async function HomePage({
                 maxLength={80}
                 required
               />
-              <button type="submit">Save</button>
+              <SubmitButton pendingLabel="Saving…">Save</SubmitButton>
             </form>
-          </details>{" "}
+          </DetailsPopover>{" "}
           ·{" "}
           <PasswordForm />{" "}
           ·{" "}
           <form action={signOutAction} style={{ display: "inline" }}>
-            <button className="quiet" style={{ margin: 0, padding: "0.1rem 0.5rem", fontSize: "0.85rem" }}>
+            <SubmitButton
+              className="quiet"
+              style={{ margin: 0, padding: "0.1rem 0.5rem", fontSize: "0.85rem" }}
+              pendingLabel="Signing out…"
+            >
               Sign out
-            </button>
+            </SubmitButton>
           </form>
         </nav>
       </div>
@@ -53,7 +60,9 @@ export default async function HomePage({
       {groups.map((g) => (
         <div className="card" key={g.id}>
           <h3>
-            <Link href={`/g/${g.id}`}>{g.name}</Link>
+            <Link className="card-link" href={`/g/${g.id}`}>
+              {g.name}
+            </Link>
           </h3>
           <p className="small muted">
             {g.member_count} members ·{" "}
@@ -72,7 +81,7 @@ export default async function HomePage({
         <form action={createGroupAction}>
           <label htmlFor="name">Group name</label>
           <input id="name" name="name" type="text" placeholder="College Friends" required />
-          <button type="submit">Create group</button>
+          <SubmitButton pendingLabel="Creating…">Create group</SubmitButton>
         </form>
         {error && <p className="error">{error}</p>}
       </div>

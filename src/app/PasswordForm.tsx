@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createSupabaseBrowser } from "../lib/auth/client";
+import DetailsPopover from "./DetailsPopover";
 
 /**
  * Sets or changes the signed-in user's password via Supabase Auth.
@@ -12,13 +13,16 @@ export default function PasswordForm() {
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setStatus(null);
+    setBusy(true);
     const supabase = createSupabaseBrowser();
     const { error } = await supabase.auth.updateUser({ password });
+    setBusy(false);
     if (error) setError(error.message);
     else {
       setPassword("");
@@ -27,8 +31,7 @@ export default function PasswordForm() {
   }
 
   return (
-    <details className="name-editor">
-      <summary title="Set or change your password">Password</summary>
+    <DetailsPopover summary="Password" title="Set or change your password">
       <form onSubmit={save} className="card">
         <label htmlFor="new-password">New password</label>
         <input
@@ -41,10 +44,12 @@ export default function PasswordForm() {
           autoComplete="new-password"
           placeholder="At least 6 characters"
         />
-        <button type="submit">Save</button>
+        <button type="submit" disabled={busy} aria-busy={busy}>
+          {busy ? "Saving…" : "Save"}
+        </button>
         {status && <p className="notice">{status}</p>}
         {error && <p className="error">{error}</p>}
       </form>
-    </details>
+    </DetailsPopover>
   );
 }
